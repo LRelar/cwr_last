@@ -6,7 +6,7 @@
 /*   By: mschimme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/03 18:16:19 by mschimme          #+#    #+#             */
-/*   Updated: 2020/10/10 18:13:24 by mschimme         ###   ########.fr       */
+/*   Updated: 2020/12/26 15:29:12 by mschimme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,20 +60,17 @@ inline static void		ft_place_champs(t_world *nexus)
 	int					ch_amount;
 	uint8_t				*arena;
 
-	arena = &nexus[sizeof(RTP)];
-	ch_amount = nexus->champs;
-	step = nexus->champs;
+	arena = &nexus->arena[sizeof(RTP)];
+	ch_amount = -1;
+	step = MEM_SIZE / nexus->champs;
 	entry_ptr = 0;
-	while (--ch_amount)
+	while (++ch_amount != nexus->champs)
 	{
 		ft_memcpy((void *)(arena + entry_ptr), \
 					(void *)nexus->champ_ord[ch_amount]->body, \
 					(size_t)nexus->champ_ord[ch_amount]->size);
-		entry_ptr += MEM_SIZE / step;
+		entry_ptr += step;
 	}
-	ft_memcpy((void *)(arena + entry_ptr), \
-				(void *)nexus->champ_ord[ch_amount]->body, \
-				(size_t)nexus->champ_ord[ch_amount]->size);
 }
 
 inline static void		ft_print_intro(t_champ **champ_arr)

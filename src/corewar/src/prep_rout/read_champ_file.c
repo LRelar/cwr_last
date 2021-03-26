@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   read_champ_file.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ycorrupt <ycorrupt@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mschimme <mschimme@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/05 10:55:21 by mschimme          #+#    #+#             */
-/*   Updated: 2020/09/26 13:37:17 by ycorrupt         ###   ########.fr       */
+/*   Updated: 2021/02/22 18:48:33 by mschimme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cwr.h>
+#include <cwr_man.h>
 
 #define _WRONG_SEPARATOR(x, y) (*(_SEP_TYPE *)(x + y) != 0)
 #define CH_NAME curr->name
@@ -26,7 +27,7 @@ inline static void		ft_get_magicname(int fd, t_vasa **error, t_champ *curr)
 		ft_err_invalid_filesize(error, "Magic number field");
 		return ;
 	}
-	if (magic != (int)(_SW_ENDIAN(COREWAR_EXEC_MAGIC)))
+	if (magic != (int)(ft_swap_endian(COREWAR_EXEC_MAGIC, 4)))
 		ft_err_invalid_cwr_magic(error, NULL);
 	if ((res = read(fd, curr->name, (PROG_NAME_LENGTH + REG_SIZE))) != \
 												PROG_NAME_LENGTH + REG_SIZE)
@@ -35,7 +36,8 @@ inline static void		ft_get_magicname(int fd, t_vasa **error, t_champ *curr)
 		return ;
 	}
 	if (ft_ctrl_detect((void *)curr->name, PROG_NAME_LENGTH))
-		ft_err_invalid_name(error, NULL);
+		if (ft_ask_user(WAR_CTRL_1))
+			ft_err_invalid_name(error, NULL);
 	if (_WRONG_SEPARATOR(curr->name, PROG_NAME_LENGTH))
 		ft_err_invalid_separator(error, "between Name and Comment.");
 }
@@ -51,7 +53,7 @@ inline static void		ft_get_champ_size(int fd, \
 		ft_err_invalid_filesize(champ_error, "File size field.");
 		return ;
 	}
-	champ->size = (RTP)(_SW_ENDIAN(size));
+	champ->size = (RTP)(ft_swap_endian(size, 4));
 	if (champ->size > CHAMP_MAX_SIZE)
 		ft_err_invalid_champsize(champ_error, NULL);
 }
@@ -67,8 +69,9 @@ inline static void		ft_get_champ_comment(int fd, \
 		ft_err_invalid_filesize(champ_error, "Champion Comment field");
 		return ;
 	}
-	if (ft_ctrl_detect((void *)champ->desc, COMMENT_LENGTH))
-		ft_err_invalid_comment(champ_error, NULL);
+	// if (ft_ctrl_detect((void *)champ->desc, COMMENT_LENGTH))
+	// 	if (ft_ask_user(WAR_CTRL_2))
+	// 		ft_err_invalid_comment(champ_error, NULL);
 	if (_WRONG_SEPARATOR(champ->desc, COMMENT_LENGTH))
 		ft_err_invalid_separator(champ_error, "between Comment and Body.");
 }

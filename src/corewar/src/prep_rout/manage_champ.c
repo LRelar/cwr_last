@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   manage_champ.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ycorrupt <ycorrupt@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mschimme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/08 14:04:13 by mschimme          #+#    #+#             */
-/*   Updated: 2020/09/26 13:47:49 by ycorrupt         ###   ########.fr       */
+/*   Updated: 2020/10/25 13:23:12 by mschimme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 void		ft_clear_champ(t_champ *this)
 {
-	DEBfunc()
+	// DEBfunc()
 	if (this->name)
 		free(this->name);
 	if (this->desc)
@@ -30,7 +30,7 @@ void		ft_clear_champ(t_champ *this)
 	this->body = NULL;
 	this->id = 0;
 	this->size = 0;
-	DEBex(" clearing current champ")
+	// DEBex(" clearing current champ")
 }
 
 
@@ -42,7 +42,7 @@ void		ft_clear_champ(t_champ *this)
 */
 uint8_t		*ft_champ_body_alloc(size_t ch_size, t_vasa **champ_err)
 {
-DEBfunc()
+// DEBfunc()
 	void *body;
 
 	body = NULL;

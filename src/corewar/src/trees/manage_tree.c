@@ -6,7 +6,7 @@
 /*   By: mschimme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/23 21:45:02 by mschimme          #+#    #+#             */
-/*   Updated: 2020/09/08 14:06:07 by mschimme         ###   ########.fr       */
+/*   Updated: 2020/11/15 19:00:25 by mschimme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,13 @@ inline static uint8_t	ft_carry_control(t_dvasa *leafnode, t_vasa **head, t_cycle
 
 	if (!(*head) || !((*head)->gen.carry))
 		return (0);
-	if (cyc_ptr->cycle - (*head)->gen.carry->last_live_op > DEATH_CYC)
+	if (cyc_ptr->cycle - (*head)->gen.carry->last_live_op >= DEATH_CYC)
 		return (ft_carryhead_control(head));
 	carry_ptr = (*head)->next;
 	subst = (*head);
 	while (carry_ptr)
 	{
-		if (cyc_ptr->cycle - carry_ptr->gen.carry->last_live_op > DEATH_CYC)
+		if (cyc_ptr->cycle - carry_ptr->gen.carry->last_live_op >= DEATH_CYC)
 		{
 			subst->next = carry_ptr->next;
 			ft_lstdelone((t_list **)&carry_ptr, &ft_del);

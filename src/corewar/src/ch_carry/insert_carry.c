@@ -6,7 +6,7 @@
 /*   By: mschimme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/06 23:21:19 by mschimme          #+#    #+#             */
-/*   Updated: 2020/09/08 13:32:56 by mschimme         ###   ########.fr       */
+/*   Updated: 2020/10/31 15:47:20 by mschimme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ static void	ft_insert_amid_chain(t_vasa *ptr, t_vasa *new)
 /*
 *	ПРОВЕРИЛ.
 !КОНТРАКТ:
-	* t_dvasa *leaf должен быть валидным, на входе не проверяется.
+	*	t_dvasa *leaf	- должен быть валидным, на входе не проверяется.
+	*	t_vasa *new		- должен быть валидным, на входе не проверяется.
 */
 void		ft_add_offspring_by_id(t_dvasa *leaf, t_vasa *new)
 {

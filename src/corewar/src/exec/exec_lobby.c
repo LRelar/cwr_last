@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_lobby.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mschimme <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mschimme <mschimme@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/23 13:31:22 by mschimme          #+#    #+#             */
-/*   Updated: 2020/09/08 14:29:39 by mschimme         ###   ########.fr       */
+/*   Updated: 2021/02/22 21:35:43 by mschimme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,8 @@ void					ft_exec_battle(t_world *nexus)
 	ft_form_tree(&tree, nexus);
 	if (!tree)
 		ft_manage_world(NULL);
-	ft_the_cycle(nexus, tree);
+	if (nexus->flags & 1)
+		ft_the_dump_cycle(nexus, tree);
+	else
+		ft_the_cycle(nexus, tree);
 }

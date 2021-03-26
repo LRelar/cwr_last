@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dvasa_pick.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mschimme <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mschimme <mschimme@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/06 22:11:06 by mschimme          #+#    #+#             */
-/*   Updated: 2020/09/13 22:03:34 by mschimme         ###   ########.fr       */
+/*   Updated: 2021/02/26 22:16:17 by mschimme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,3 +74,4 @@ void			ft_leafnode_pick(t_vasa *carry_cont, t_dvasa *tree, \
 		ft_new_leafnode_insert(&tree, new_node, root);
 	manager(tree, carry_cont);
 }
+

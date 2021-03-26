@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   the_cycle.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mschimme <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mschimme <mschimme@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/23 22:13:49 by mschimme          #+#    #+#             */
-/*   Updated: 2020/10/10 20:33:57 by mschimme         ###   ########.fr       */
+/*   Updated: 2021/03/26 20:33:13 by mschimme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ inline static void		ft_cycle_control(t_world *nexus, \
 			cyc_ptr->cyc_to_die = (cyc_ptr->cyc_to_die - CYCLE_DELTA) * (cyc_ptr->cyc_to_die >= CYCLE_DELTA);
 			cyc_ptr->num_of_checks = 0;
 		}
-		// предусмотреть итератор на следующую проверку.
 	cyc_ptr->next_check += cyc_ptr->cyc_to_die + (cyc_ptr->cyc_to_die == 0);	//? Бесполезная защита
 	cyc_ptr->lives_done = 0;
 	}
@@ -118,7 +117,7 @@ inline static void	ft_carry_process(t_world *nexus, t_dvasa **tree, \
 	carry_bogey = (*tree)->gen.vasa;
 	if (nexus->cyc.cycle == carry_bogey->gen.carry->exec_cyc)
 	{
-		while (carry_bogey)
+		while (carry_bogey) 
 		{
 			carry_bogey->gen.carry->pos = \
 									ft_calc_addr(carry_bogey->gen.carry->pos);
@@ -127,39 +126,63 @@ inline static void	ft_carry_process(t_world *nexus, t_dvasa **tree, \
 												carry_bogey->gen.carry->pos]);
 			op_tab[op_code * (carry_bogey->gen.carry->op != 0)](nexus, \
 									carry_bogey->gen.carry, *tree, new_node);
-			ft_leafnode_pick(carry_bogey, *tree, new_node, &ft_carry_ins_by_id);
+			ft_leafnode_pick(carry_bogey, *tree, new_node, &ft_add_offspring_by_id);
 			carry_bogey = (*tree)->gen.vasa;
 		}
-#ifndef NDEBUG
-tft_leafnode_not_empty(*tree);
-#endif
+// #ifndef NDEBUG
+// tft_leafnode_not_empty(*tree);
+// #endif
 		ft_leafnode_vacate(tree, new_node);
-#ifndef NDEBUG
-tft_newnode_not_empty(*new_node);
-#endif
+// #ifndef NDEBUG
+// tft_newnode_not_empty(*new_node);
+// #endif
 	}
 }
 
 /*
-TODO:	Дописать ft_print_dump.
-
-		! Сейчас используется старая сортировка t_vasa в t_dvasa.
-		! Потому актуально наличие ->left.
-
-		! Должна возвращать 1, если кончились cyc_to_dump.
-		! Должна итерировать cyc_to_dump.
-		! Должна высвобождать t_vasa.
-*	Потенциальная сега в первом if цикла (если за каким-то, блядь, хуем,
-*	останемся в цикле отработав последний cyc_to_dump)
+**	/////		! Сейчас используется старая сортировка t_vasa в t_dvasa.\
+**	/////		! Потому актуально наличие ->left.\
+**		! Должна возвращать 1, если кончились cyc_to_dump.
+**		! Должна итерировать cyc_to_dump.
+**		! Должна высвобождать t_vasa.
+***	Потенциальная сега в первом if цикла (если за каким-то, блядь, хуем,
+***	останемся в цикле отработав последний cyc_to_dump)
 */
+
+void		ft_the_dump_cycle(t_world *nexus, t_dvasa *tree)
+{
+	t_dvasa	*vacant;
+
+	vacant = NULL;
+	while (tree)
+	{
+		if (nexus->cyc.cycle == nexus->cyc.cyc_to_dump->gen.cyc_sol)
+			if (ft_print_dump(nexus))
+			{
+				ft_destroy_leaftree(&tree, &vacant);
+				return ;
+			}
+		ft_carry_process(nexus, &tree, &vacant);
+		ft_cycle_control(nexus, &tree, &vacant);
+		nexus->cyc.cycle++;
+		/*
+		! Проверка на cycle_to_die. Очистка мертвых (кареток, героев).
+		? У нас 3 варианта:
+			1. Не осталось живых кареток -> Объявить победителя.
+			2. Не осталось живых кареток в текущем цикле...
+			3. В текущем цикле остались живые каретки -> ничего не меняется.
+		? Возможно есть смысл сравнивать с nexus->cyc.cyc_to_dump->gen.cyc_sol - 1
+		*/
+	}
+	if (vacant)
+		free(vacant);
+}
+
 void		ft_the_cycle(t_world *nexus, t_dvasa *tree)
 {
 	t_dvasa	*vacant;
-	uint8_t	dump_fl;
-	t_vasa	*curr_carry;
-	curr_carry = NULL;
+
 	vacant = NULL;
-	dump_fl = nexus->flags;
 	while (tree)
 	{
 		nexus->cyc.cycle++;
@@ -173,8 +196,8 @@ void		ft_the_cycle(t_world *nexus, t_dvasa *tree)
 			3. В текущем цикле остались живые каретки -> ничего не меняется.
 		? Возможно есть смысл сравнивать с nexus->cyc.cyc_to_dump->gen.cyc_sol - 1
 		*/
-		if (dump_fl && nexus->cyc.cycle == nexus->cyc.cyc_to_dump->gen.cyc_sol)
-			if (ft_print_dump(&nexus->cyc.cyc_to_dump))
-				break ;
 	}
+	if (vacant)
+		free(vacant);
+	ft_print_outro(nexus->survivor);
 }

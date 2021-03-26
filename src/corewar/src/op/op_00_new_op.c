@@ -6,7 +6,7 @@
 /*   By: mschimme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/25 18:22:49 by mschimme          #+#    #+#             */
-/*   Updated: 2020/10/10 19:58:47 by mschimme         ###   ########.fr       */
+/*   Updated: 2020/10/25 13:17:39 by mschimme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,8 @@ inline static uint8_t	ft_eval_op_code_valid(uint8_t op_code)
 void		op_new_op(t_world *nexus, t_carry *carry, \
 							t_dvasa *head, t_dvasa **vacant)
 {
+	(void)head;
+	(void)vacant;
 	carry->op = ft_eval_op_code_valid(nexus->arena[sizeof(RTP) + carry->pos]);
 	if (!(carry->op))
 		carry->pos += 1;

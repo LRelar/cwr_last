@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_input.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ycorrupt <ycorrupt@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mschimme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/03 16:23:10 by mschimme          #+#    #+#             */
-/*   Updated: 2020/09/25 00:58:19 by ycorrupt         ###   ########.fr       */
+/*   Updated: 2020/12/08 00:17:11 by mschimme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ uint8_t				ft_supervise_input(t_world *nexus, int ch_amount)
 	{
 		ft_print_intro();
 		ft_print_errors(nexus->errors);
+		nexus->flags = (NULL != nexus->cyc.cyc_to_dump);
 		if (!flag)
 			return (ft_get_action());
 	}

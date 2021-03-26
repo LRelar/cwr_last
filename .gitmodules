@@ -4,3 +4,6 @@
 [submodule "42_corewar_checker"]
 	path = 42_corewar_checker
 	url = https://github.com/apft/42_corewar_checker
+[submodule "42-Corewar-Checker"]
+	path = 42-Corewar-Checker
+	url = https://github.com/Gliperal/42-Corewar-Checker

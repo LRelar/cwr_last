@@ -6,7 +6,7 @@
 /*   By: mschimme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/13 21:26:17 by mschimme          #+#    #+#             */
-/*   Updated: 2020/10/10 18:57:38 by mschimme         ###   ########.fr       */
+/*   Updated: 2021/03/14 17:18:35 by mschimme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,13 +70,17 @@ typedef struct s_cycle		t_cycle;
 typedef struct s_error		t_error;
 typedef struct s_vasa		t_vasa;
 typedef struct s_dvasa		t_dvasa;
-typedef struct s_op			t_op;
+typedef struct s_mop			t_mop;
 typedef void				t_err_rout(t_vasa **head, void *object);
 typedef void				t_op_rout(t_world *nexus, t_carry *carry, \
 										t_dvasa *head, t_dvasa **vacant);
 typedef void				t_carry_cont_rout(t_dvasa *leafnode, \
 												t_vasa *carry_cont);
 typedef RTP					t_swap_endian_rout(RTP value);
+typedef RTP					t_get_operand_val_rout(uint8_t *arena, \
+								t_mop *op_cont, t_carry *carry, intptr_t pos);
+typedef void				t_set_operand_val_rout(uint8_t *arena, \
+								t_mop *op_cont, t_carry *carry, intptr_t pos);
 
 # ifndef VASA_H
 #  define VASA_H
@@ -110,6 +114,7 @@ typedef enum
 
 /*
 **	.ops_amount;	-	Amount of operands.
+**	.cd_byte		-	Presence of coding byte in the instruction.
 **	.t_dir_size;	-	Size of t_dir for the op.
 **	.ops_types[4];	-	Array to store operands' types.
 **	.ops_length[4];	-	Array to store length of the operand.
@@ -117,14 +122,16 @@ typedef enum
 **	.length;		-	Total length of the op.
 */
 
-struct						s_op
+struct						s_mop
 {
 	size_t					cooldown;
+	intptr_t				mod;
 	uint8_t					ops_amount;
+	uint8_t					cd_byte;
 	uint8_t					t_dir_size;
-	uint8_t					ops_types[4];
-	uint8_t					ops_length[4];
-	RTP						operands[4];
+	uint8_t					ops_types[MAX_ARGS_NUMBER];
+	uint8_t					ops_length[MAX_ARGS_NUMBER];
+	RTP						operands[MAX_ARGS_NUMBER];
 	intptr_t				length;
 };
 
@@ -192,7 +199,7 @@ struct						s_cycle
 **					с предыдущего цикла (только исполнила предыдущую свою
 **					инструкцию), ей необходимо встать на кулдаун по новой.
 **	.last_live_op	-	Number of last cycle the carry were alive.
-**	.exec_cyc		-	Number of the cycly of the op execution.
+**	.exec_cyc		-	Number of the cycle of the op to be executed.
 */
 
 struct						s_carry
@@ -200,7 +207,7 @@ struct						s_carry
 	int						id;
 	RTP						reg[REG_NUMBER];
 	intptr_t				pos;
-	t_op					*op_cont;
+	t_mop					*op_cont;
 	uint8_t					op;
 	t_bool					carry_flag;
 	size_t					last_live_op;
@@ -224,7 +231,7 @@ struct						s_champ
 	char					*name;
 	char					*desc;
 	uint8_t					*body;
-	size_t					lives_now;
+	size_t					last_live_op;
 };
 
 /*

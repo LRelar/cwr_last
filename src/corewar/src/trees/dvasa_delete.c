@@ -6,7 +6,7 @@
 /*   By: mschimme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/23 19:57:15 by mschimme          #+#    #+#             */
-/*   Updated: 2020/09/08 13:09:07 by mschimme         ###   ########.fr       */
+/*   Updated: 2020/10/28 23:20:23 by mschimme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,14 +64,14 @@ void		ft_leafnode_vacate(t_dvasa **tree, t_dvasa **vacant)
 void		ft_del_leafnode(t_dvasa **aleaf)
 {
 	t_dvasa	*ptr;
-{	//*	Debug block
-	if (*aleaf && (*aleaf)->gen.vasa)
-	{
-		DEBfunc()
-		DEBmesst("We deleting leaf with offsprings left!") DEBend()
-		sleep(5);
-	}
-}
+// {	//*	Debug block
+// 	if (*aleaf && (*aleaf)->gen.vasa)
+// 	{
+// 		DEBfunc()
+// 		DEBmesst("We deleting leaf with offsprings left!") DEBend()
+// 		sleep(5);
+// 	}
+// }
 	if (!aleaf)
 		return ;
 	if (*aleaf)

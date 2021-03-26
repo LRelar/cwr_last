@@ -6,7 +6,7 @@
 /*   By: mschimme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/03 13:06:29 by mschimme          #+#    #+#             */
-/*   Updated: 2020/08/02 12:22:08 by mschimme         ###   ########.fr       */
+/*   Updated: 2020/12/26 14:01:55 by mschimme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,10 @@
 #define MAN_DESC_10 "e folowing Champion will be assigned\n\t\tautomatically.\n"
 #define MAN_DESC_11 "\n\tYou can add up to %d champions in the game.\n"
 #define ERR_DESC_1 "{yellow}Errors pop up in stack-like way (latter go first)."
-#define ERR_DESC_2 "Champion parsing related errors pop up in diricet (queue)"
+#define ERR_DESC_2 "Champion parsing related errors pop up in direct (queue)"
 #define ERR_DESC_3 "order.\n\n"
+#define WAR_CTRL_1 "A champ got control chars within its name! Ignore the case?"
+#define WAR_CTRL_2 "A champ got control chars within its desc! Ignore the case?"
 #define ERR_STAT_1 "The battle still can go on. Proceed?"
 #define ERR_STAT_2 "Incorrect input. Waiting for: "
 #define ERR_INPUT "Yes (Enter key) / No (Esc+Enter key)..."

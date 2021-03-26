@@ -3,59 +3,33 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sfalia-f <sfalia-f@student.21-school.ru    +#+  +:+       +#+         #
+#    By: mschimme <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2019/09/28 20:41:38 by ycorrupt          #+#    #+#              #
-#    Updated: 2020/08/19 00:15:29 by sfalia-f         ###   ########.fr        #
+#    Created: 2020/10/31 20:04:15 by mschimme          #+#    #+#              #
+#    Updated: 2020/10/31 20:09:45 by mschimme         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME			=	asm
-DIR_ASM			=	./src/asm/
-SRCS_ASM		=	asm_cor_init.c \
-					asm_cpy_word.c \
-					asm_translate.c \
-					asm.c \
-					cor_command_check.c \
-					cor_label_check.c \
-					init_struct.c \
-					read_cor_file.c \
-					special_arg.c \
-					argument_check.c \
-					skips.c \
-					data_size.c \
-					resolve_connections.c \
-					data_convert.c \
-					bytes_rev.c
+DIR_LIB	=	./src/libft
 
+.PHONY: all clean fclean re corewar asm
 
-SRCS			=	$(addprefix $(DIR_ASM), $(SRCS_ASM)) \
-					src/op.c
-OBJ				=	$(patsubst %.c, %.o, $(SRCS))
-CC				=	clang
-FLAGS			=	-Wall -Wextra -Werror -g
-LIBRARY			=	src/libft/
-LIBFT			=	$(LIBRARY)libft.a
-HEADERS			=	includes/ $(LIBRARY)includes
-INCLUDES		=	-I includes/ -I $(LIBRARY)includes
+all: corewar asm
 
-all: $(LIBFT) $(NAME)
+corewar:
+		@make -f mker_cwr
 
-$(NAME): $(OBJ)
-	$(CC) $(FLAGS) -o $(NAME) $(OBJ) -L $(LIBRARY) -lft
-
-$(LIBFT):
-	make -C $(LIBRARY)
-
-%.o : %.c $(HEADERS)
-	$(CC) $(FLAGS) -c $(INCLUDES) $< -o $@
+asm:
+		@make -f mker_asm
 
 clean:
-	rm -f $(OBJ)
-	make -C $(LIBRARY) clean
+		@$(MAKE) -C $(DIR_LIB) clean
+		@make -f mker_cwr clean
+		@make -f mker_asm clean
 
 fclean: clean
-	rm -rf $(NAME)
-	make -C $(LIBRARY) fclean
+		@$(MAKE) -C $(DIR_LIB) fclean
+		@make -f mker_cwr fclean
+		@make -f mker_asm fclean
 
 re: fclean all

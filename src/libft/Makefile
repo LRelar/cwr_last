@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mschimme <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: andru <andru@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/03/06 00:16:21 by mschimme          #+#    #+#              #
-#    Updated: 2020/08/22 16:24:26 by mschimme         ###   ########.fr        #
+#    Updated: 2021/03/18 00:46:19 by andru            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -251,12 +251,17 @@ all: $(NAME)
 
 $(NAME): MAKEDIR $(OBJECTS)
 	@ar rc $@ $(OBJECTS)
+	@echo ""
+	@echo '$(NAME) ready'
 
 MAKEDIR:
 	@mkdir -p $(OBJ_DIR)
 
 $(OBJ_DIR)/%.o:%.c
-	$(CC) $(CFLAGS) -o $@ $< -c $(IFLAGS)
+	@echo -ne '\e[1K\e[0ECompile '
+	@printf '\e[1;32m%-6s\e[m' $@
+	@$(CC) $(CFLAGS) -o $@ $< -c $(IFLAGS)
+	@echo -ne '\e[1K\e[0ECompile competed '
 
 clean:
 	@rm -rf $(OBJ_DIR)

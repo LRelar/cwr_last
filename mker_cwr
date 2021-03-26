@@ -1,0 +1,135 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    mker_cwr                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: mschimme <marvin@42.fr>                    +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2020/01/14 17:47:27 by mschimme          #+#    #+#              #
+#    Updated: 2020/12/26 14:10:27 by mschimme         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+NAME	=	corewar
+CC		=	clang
+FLAGS	=	-Wall -Wextra -g
+DIR_LIB	=	./src/libft
+
+#**********************				PATHS:			***************************#
+VPATH	:=	./src/corewar/src: \
+			./src/corewar/src/ch_carry: \
+			./src/corewar/src/errors: \
+			./src/corewar/src/exec: \
+			./src/corewar/src/flip_endian: \
+			./src/corewar/src/op: \
+			./src/corewar/src/prep_rout: \
+			./src/corewar/src/print: \
+			./src/corewar/src/serv: \
+			./src/corewar/src/trees:
+
+#**********************				src:			***************************#
+SOURCE	+=	corewar.c
+#**********************			src/ch_carry:		***************************#
+SOURCE	+=	create_carry.c \
+			init_carries.c \
+			insert_carry.c
+#**********************			src/errors:			***************************#
+SOURCE	+=	err_champ.c \
+			err_champ_content.c \
+			err_champ_content_2.c \
+			err_champ_mgr.c \
+			err_comp_params.c \
+			err_f_n.c \
+			err_fdump.c \
+			err_gen.c
+#**********************			src/exec:			***************************#
+SOURCE	+=	exec_lobby.c \
+			get_operands.c \
+			operands_head_get.c \
+			operands_head_set.c \
+			the_cycle.c
+#**********************		src/flip_endian:		***************************#
+SOURCE	+=	end_01_conv_1_4.c \
+			end_02_conv_5-8.c
+#**********************				src/op:			***************************#
+SOURCE	+=	arena_get.c \
+			op_00_new_op.c \
+			op_01_live.c \
+			op_02_ld.c \
+			op_03_st.c \
+			op_04_add.c \
+			op_05_sub.c \
+			op_06_and.c \
+			op_07_or.c \
+			op_08_xor.c \
+			op_09_zjmp.c \
+			op_10_ldi.c \
+			op_11_sti.c \
+			op_12_fork.c \
+			op_13_lld.c \
+			op_14_lldi.c \
+			op_15_lfork.c \
+			op_16_aff.c \
+			op_cont.c
+#**********************			src/prep_rout:		***************************#
+SOURCE	+=	check_id.c \
+			check_input.c \
+			manage_champ.c \
+			parse_champ.c \
+			parse_fdump.c \
+			parse_n_flag.c \
+			prep_battle.c \
+			read_champ_file.c \
+			read_params.c
+#**********************			src/print:			***************************#
+SOURCE	+=	print_dump_lobby.c \
+			print_outro.c
+#**********************			src/serv:			***************************#
+SOURCE	+=	_del_carry.c \
+			_del_error.c \
+			add_cyclist.c \
+			cyc_cycsol_cmp.c \
+			interact_user.c \
+			is_digits.c \
+			manage_world.c \
+			proxies.c \
+			sort_champs.c
+#**********************			src/trees:			***************************#
+SOURCE	+=	dvasa_add.c \
+			dvasa_create.c \
+			dvasa_delete.c \
+			dvasa_pick.c \
+			manage_tree.c
+
+OBJ_DIR		:=	./obj_$(NAME)
+OBJECTS		:=	$(patsubst %,$(OBJ_DIR)/%,$(SOURCE:.c=.o))
+
+INC_DIR	:=	./src/corewar/includes $(DIR_LIB)/includes ./includes
+IFLAGS	+=	$(foreach d, $(INC_DIR), -I$d)
+
+.PHONY: all clean fclean re MAKEDIR LIB
+
+all: $(NAME)
+
+$(NAME): LIB MAKEDIR $(OBJECTS)
+	@$(CC) $(FLAGS) $(OBJECTS) -L $(DIR_LIB) -lft  -o $(NAME)
+
+LIB:
+	@$(MAKE) -C $(DIR_LIB)
+
+MAKEDIR:
+	@mkdir -p $(OBJ_DIR)
+
+$(OBJ_DIR)/%.o:%.c
+	@$(CC) $(FLAGS) $(IFLAGS) -o $@ -c $<
+
+clean:
+	@rm -rf $(OBJ_DIR)
+	@$(MAKE) -C $(DIR_LIB) clean
+	
+
+fclean: clean
+	@rm -rf $(NAME)
+	@$(MAKE) -C $(DIR_LIB) fclean
+
+re: fclean all

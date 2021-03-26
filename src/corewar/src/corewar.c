@@ -6,7 +6,7 @@
 /*   By: mschimme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/14 17:38:48 by mschimme          #+#    #+#             */
-/*   Updated: 2020/10/10 17:31:32 by mschimme         ###   ########.fr       */
+/*   Updated: 2020/11/15 18:54:29 by mschimme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ inline static uint8_t	ft_init_champs_r(t_world *nexus)
 	if (i != MAX_PLAYERS)
 		ft_prox_err_malloc("CH_NAME", __func__);
 	nexus->cyc.cyc_to_die = CYCLE_TO_DIE;
+	nexus->cyc.next_check = CYCLE_TO_DIE;
 	return (0);
 }
 

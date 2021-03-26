@@ -1,0 +1,76 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    mker_asm                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: andru <andru@student.42.fr>                +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2019/09/28 20:41:38 by ycorrupt          #+#    #+#              #
+#    Updated: 2021/03/18 00:48:52 by andru            ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+NAME			=	asm
+CC		=	clang
+FLAGS	=	-Wall -Wextra -Werror
+DIR_LIB	=	./src/libft
+
+#**********************				PATHS:			***************************#
+VPATH	:=	./src/asm/src: \
+			./src:
+#**********************				asm:			***************************#
+SOURCE	+=	argument_check.c \
+			asm.c \
+			asm_cor_init.c \
+			asm_cpy_word.c \
+			asm_translate.c \
+			bytes_rev.c \
+			cor_command_check.c \
+			cor_label_check.c \
+			data_convert.c \
+			data_size.c \
+			init_struct.c \
+			read_cor_file.c \
+			resolve_connections.c \
+			skips.c \
+			special_arg.c
+#**********************				src:			***************************#
+SOURCE	+=	op.c
+
+OBJ_DIR		:=	./obj_$(NAME)
+OBJECTS		:=	$(patsubst %,$(OBJ_DIR)/%,$(SOURCE:.c=.o))
+
+INC_DIR	:=	./src/asm/includes $(DIR_LIB)/includes ./includes
+IFLAGS	+=	$(foreach d, $(INC_DIR), -I $d)
+
+.PHONY: all clean fclean re MAKEDIR LIB
+
+all: $(NAME)
+
+$(NAME): LIB MAKEDIR $(OBJECTS)
+	@$(CC) $(OBJECTS) -L $(DIR_LIB) -lft  $(FLAGS) -o $(NAME)
+	@echo ""
+	@echo '$(NAME) ready'
+
+LIB:
+	@$(MAKE) -C $(DIR_LIB)
+
+MAKEDIR:
+	@mkdir -p $(OBJ_DIR)
+
+$(OBJ_DIR)/%.o:%.c
+	@echo -ne '\e[1K\e[0ECompile '
+	@printf '\e[1;32m%-6s\e[m' $@
+	@$(CC) $(IFLAGS) $(FLAGS) -c $< -o $@
+	@echo -ne '\e[1K\e[0ECompile competed '
+
+clean:
+	@rm -rf $(OBJ_DIR)
+	@$(MAKE) -C $(DIR_LIB) clean
+	
+
+fclean: clean
+	@rm -rf $(NAME)
+	@$(MAKE) -C $(DIR_LIB) fclean
+
+re: fclean all

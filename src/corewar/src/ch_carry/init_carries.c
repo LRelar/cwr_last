@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_carries.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mschimme <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mschimme <mschimme@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/22 13:57:16 by mschimme          #+#    #+#             */
-/*   Updated: 2020/09/08 14:31:41 by mschimme         ###   ########.fr       */
+/*   Updated: 2021/02/26 23:11:07 by mschimme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,15 +36,17 @@ inline static void		ft_init_carry_origin(t_carry *carry, t_champ *parent, \
 	carry->reg[0] = -(parent->id);
 	carry->parent = parent;
 	carry->pos = position;
-	carry->exec_cyc = 1;
+	carry->exec_cyc = 0;
 }
 
 void					ft_init_carries(t_world *nexus)
 {
 	uintptr_t	entry_ptr;
+	uintptr_t	step;
 	t_vasa		*canary;
 	t_champ		**ch_ptr;
 
+	step = MEM_SIZE / (nexus->champs);
 	ch_ptr = nexus->champ_ord;
 	entry_ptr = 0;
 	while (*ch_ptr)
@@ -55,7 +57,7 @@ void					ft_init_carries(t_world *nexus)
 		if (ft_check_production(nexus->carry, canary))
 				ft_prox_err_malloc("new carry or its container", __func__);
 		ft_init_carry_origin(nexus->carry->gen.carry, *ch_ptr, entry_ptr);
-		entry_ptr += MEM_SIZE / (nexus->champs);
+		entry_ptr += step;
 		ch_ptr++;
 	}
 }

@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   manage_world.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ycorrupt <ycorrupt@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mschimme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/17 14:41:54 by mschimme          #+#    #+#             */
-/*   Updated: 2020/09/26 13:41:58 by ycorrupt         ###   ########.fr       */
+/*   Updated: 2020/12/26 20:08:34 by mschimme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cwr.h>
 #define _FT_WIPE_CARRIES ft_lstdel
 #define _FT_CLEAR_ERRORS ft_lstdel
+#define _FT_CLEAR_DUMPS ft_lstdel
 
 /*
 **	Временная функция ловить косяк, в случаях, если у нас и nexus пустой, и
@@ -21,7 +22,7 @@
 
 static void ft_no_world(void)
 {
-	DEBmesst("Проверяй, где облажался, ты пытаешься удалить арену (nexus), которую не задал!") DEBend()
+	// DEBmesst("Проверяй, где облажался, ты пытаешься удалить арену (nexus), которую не задал!") DEBend()
 	exit(1);
 }
 
@@ -49,7 +50,7 @@ void	ft_wipe_champs(t_champ *ptr)
 		ft_bzero((void *)&ptr[i], sizeof(t_champ));
 		i++;
 	}
-	DEBend()
+	// DEBend()
 }
 
 /*
@@ -76,6 +77,7 @@ void	ft_manage_world(t_world *nexus)
 		{
 			ft_wipe_champs(&(guillotine->champ[0]));
 			_FT_CLEAR_ERRORS((t_list **)&(guillotine->errors), &ft_del);
+			_FT_CLEAR_DUMPS((t_list **)&(guillotine->cyc.cyc_to_dump), NULL);
 			guillotine->survivor = NULL;
 			if (guillotine->champ_ord)
 				free(guillotine->champ_ord);
